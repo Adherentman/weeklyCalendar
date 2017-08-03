@@ -23,8 +23,9 @@
       #weeks_ch li {line-height: 30px}
       #weeks_ch li,
       #weeklyCanlendarView li {float: left;display: inline;width: 14.28571428%;text-align: center;}
-      #weeklyCanlendarView li a {display: inline-block;width: 34px;line-height: 34px;border-radius: 100%;color: #0d87ea;text-decoration: none;}
+      #weeklyCanlendarView li a {display: inline-block;width: 34px;line-height: 34px;border-radius: 100%;color: #0d87ea;text-decoration: none;border:1px solid transparent}
       #weeklyCanlendarView li.active a {background:#0d87ea;color: #fff;} 
+	  #weeklyCanlendarView li.clickActive a {border:1px solid #0d87ea}
     </style>
     </head>
   <body>
@@ -96,7 +97,10 @@
 
           var d = new Date();
           var day = d.getDay();
-          var currDate = d.getDate();
+          var currDate = d.getDate(),
+              currMonth = d.getMonth() + 1;
+    		  var lis = $$('weeklyCanlendarView').getElementsByTagName('li'),
+              aTags = $$('weeklyCanlendarView').getElementsByTagName('a');
 
           /*创建星期*/
           var creatWeek = function(){
@@ -131,7 +135,7 @@
           var creatWeekCalendar = function(some){
             var a = '';
             for (var i = some,len = some+7; i < len; i++) {
-              if (calcTime(i).date == currDate) {
+              if (calcTime(i).month == currMonth && calcTime(i).date == currDate) {
                 a += '<li class="active"><a href="javascript:;" data-year="'+calcTime(i).year+'" title="'+calcTime(i).month+'月">'+calcTime(i).date+'</a></li>';
               }else{
                 a += '<li><a href="javascript:;" data-year="'+calcTime(i).year+'" title="'+calcTime(i).month+'月">'+calcTime(i).date+'</a></li>';
@@ -165,15 +169,15 @@
           var clickedTimes = $$('weeklyCanlendarView').getAttribute('clickedTimes');
           var weekNum = $$('week_selector').getAttribute('week');
           /*前一周和后一周方法*/
-          var transormWeek = function(clickedTimes,weekNum){ 
+          var changeWeek = function(clickedTimes,weekNum){ 
             creatWeekCalendar(-day-(7*clickedTimes));
             $$('weeklyCanlendarView').setAttribute('clickedTimes',clickedTimes);
             //动态设置月
-            var clickMonth = parseInt($$('weeklyCanlendarView').getElementsByTagName('a')[6].title);
+            var clickMonth = parseInt(aTags[6].title);
             clickMonth < 10 ? clickMonth = "0"+clickMonth : clickMonth;
             $$('month_selector').innerHTML = clickMonth;
             //动态设置年
-            var clickYear = $$('weeklyCanlendarView').getElementsByTagName('a')[6].getAttribute('data-year');
+            var clickYear = aTags[6].getAttribute('data-year');
             $$('year_selector').innerHTML = clickYear;          
 
             //动态设置周
@@ -195,20 +199,26 @@
           $$('prev_week').onclick = function(){            
             clickedTimes ++;
             weekNum --;
-            transormWeek(clickedTimes,weekNum);
+            changeWeek(clickedTimes,weekNum);
           }
 
           /*后一周*/
           $$('next_week').onclick = function(){
             clickedTimes --;
             weekNum++;
-            transormWeek(clickedTimes,weekNum);
+            changeWeek(clickedTimes,weekNum);
           }
 
           /*选择日期*/
           $$('weeklyCanlendarView').onclick = function(e){
               var tagName = e.target.tagName.toLowerCase();
               if (tagName == "a") {
+        				for(var i = 0,len = lis.length;i < len;i++){
+        					if(lis[i].className.indexOf('active') == -1){
+        						lis[i].className = '';
+        					}					
+        				}
+        				e.target.parentNode.className = "clickActive";				
                 var _y = e.target.getAttribute('data-year'),
                     _m = parseInt(e.target.title),
                     _d = e.target.innerHTML,
@@ -228,7 +238,7 @@
 
       /*周历使用*/
       weeklyCalendar({
-        //点击日期的回调
+        //点击日期的回调，dateTime为选中的日期对象
         clickDate:function(dateTime){
           console.log(dateTime);
         }
