@@ -31,7 +31,7 @@
   <body>
     <div class="datetime_header">
         <a href="javascript:;" title="上一周" class="prev_icon" id="prev_week"></a>
-        <span><b id="year_selector">2017</b>年<b id="month_selector"></b>月</span><span style="margin-left: 20px;display: none">第<b id="week_selector"></b>周</span>        
+        <span><b id="year_selector"></b>年<b id="month_selector"></b>月</span><span style="margin-left: 20px;display: none">第<b id="week_selector"></b>周</span>        
         <a href="javascript:;" title="下一周" class="next_icon" id="next_week"></a>
     </div>
     <ul id="weeks_ch"></ul>
@@ -96,9 +96,10 @@
           }
 
           var d = new Date();
-          var day = d.getDay();
-          var currDate = d.getDate(),
-              currMonth = d.getMonth() + 1;
+          var currDay = d.getDay();
+			  currDate = d.getDate(),
+              currMonth = d.getMonth() + 1,
+			  currYear = d.getFullYear();
     		  var lis = $$('weeklyCanlendarView').getElementsByTagName('li'),
               aTags = $$('weeklyCanlendarView').getElementsByTagName('a');
 
@@ -155,12 +156,12 @@
 
           /*初始化周历*/
           var initDatetime = function(){
-              var activeM = d.getMonth()+1;
-              activeM < 10 ? activeM = "0"+activeM : activeM;
-              $$('month_selector').innerHTML = activeM;
+              currMonth < 10 ? currMonth = "0"+currMonth : currMonth;
+			  $$('year_selector').innerHTML = currYear;
+              $$('month_selector').innerHTML = currMonth;
               $$('week_selector').innerHTML = getMonthWeek();
               $$('week_selector').setAttribute('week',getMonthWeek())
-              creatWeekCalendar(-day);
+              creatWeekCalendar(-currDay);
           }()
 
           //设置初始点击次数
@@ -170,7 +171,7 @@
           var weekNum = $$('week_selector').getAttribute('week');
           /*前一周和后一周方法*/
           var changeWeek = function(clickedTimes,weekNum){ 
-            creatWeekCalendar(-day-(7*clickedTimes));
+            creatWeekCalendar(-currDay-(7*clickedTimes));
             $$('weeklyCanlendarView').setAttribute('clickedTimes',clickedTimes);
             //动态设置月
             var clickMonth = parseInt(aTags[6].title);
@@ -178,20 +179,10 @@
             $$('month_selector').innerHTML = clickMonth;
             //动态设置年
             var clickYear = aTags[6].getAttribute('data-year');
-            $$('year_selector').innerHTML = clickYear;          
-
-            //动态设置周
-            // var currYear = d.getFullYear();
-            // if(clickYear < currYear){       
-            //   $$('week_selector').innerHTML = 52;       
-            //   $$('week_selector').setAttribute('week',52);
-            // }else if (clickYear > currYear) {
-            //   $$('week_selector').innerHTML = 1;
-            //   $$('week_selector').setAttribute('week',1)
-            // }
-            // weekNum = $$('week_selector').getAttribute('week');
-
-            $$('week_selector').innerHTML = weekNum;
+            $$('year_selector').innerHTML = clickYear;  
+			
+			//动态设置周，这里周计算有点问题，所以周已经隐藏了，周设置属性，仅作为点击前一周和后一周计算的时候显示周视图
+			$$('week_selector').innerHTML = weekNum;
             $$('week_selector').setAttribute('week',weekNum);
           }
 
