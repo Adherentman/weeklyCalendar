@@ -174,7 +174,7 @@
             creatWeekCalendar(-currDay-(7*clickedTimes));
             $$('weeklyCanlendarView').setAttribute('clickedTimes',clickedTimes);
             //动态设置月
-            var clickMonth = parseInt(aTags[6].title);
+            var clickMonth = parseInt(aTags[0].title);
             clickMonth < 10 ? clickMonth = "0"+clickMonth : clickMonth;
             $$('month_selector').innerHTML = clickMonth;
             //动态设置年
