@@ -96,7 +96,7 @@
           }
 
           var d = new Date();
-          var currDay = d.getDay();
+          var currDay = d.getDay(),
 			  currDate = d.getDate(),
               currMonth = d.getMonth() + 1,
 			  currYear = d.getFullYear();
@@ -178,7 +178,7 @@
             clickMonth < 10 ? clickMonth = "0"+clickMonth : clickMonth;
             $$('month_selector').innerHTML = clickMonth;
             //动态设置年
-            var clickYear = aTags[6].getAttribute('data-year');
+            var clickYear = aTags[0].getAttribute('data-year');
             $$('year_selector').innerHTML = clickYear;  
 			
 			//动态设置周，这里周计算有点问题，所以周已经隐藏了，周设置属性，仅作为点击前一周和后一周计算的时候显示周视图
@@ -211,8 +211,8 @@
         				}
         				e.target.parentNode.className = "clickActive";				
                 var _y = e.target.getAttribute('data-year'),
-                    _m = parseInt(e.target.title),
-                    _d = e.target.innerHTML,
+                    _m = parseInt(e.target.title) < 10 ? "0"+parseInt(e.target.title) : parseInt(e.target.title),
+                    _d = e.target.innerHTML < 10 ? "0"+e.target.innerHTML : e.target.innerHTML,
                      dateTime;
                 dateTime = {
                   "year":_y,
