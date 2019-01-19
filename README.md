@@ -32,7 +32,3 @@
     }
   });  
 ```
-
-##### 效果截图:
-
-![UI](https://upload-images.jianshu.io/upload_images/7598145-492563227f8794d3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/420/format/webp)
