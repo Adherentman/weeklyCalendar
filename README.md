@@ -16,7 +16,7 @@
   });  
   
   //设置默认选中日期
-    weeklyCalendar('#j_weeklyCalendar2',{
+  weeklyCalendar('#j_weeklyCalendar2',{
     defaultDate:'2019-01-31',
     //获取选中日期
     getSelectedDate:function(dateTime){  
@@ -25,7 +25,7 @@
   });  
 
   //设置禁用日期
-    weeklyCalendar('#j_weeklyCalendar3',{
+  weeklyCalendar('#j_weeklyCalendar3',{
     disabledDate:['2019-01-18','2019-01-19','2019-01-20'],
     clickDate:function(dateTime){
       console.log(dateTime);
